@@ -21,7 +21,7 @@ class Register extends Component {
     passwordConfirmation: "",
     errors: [],
     loading: false,
-    usersRef: firebase.database().ref('users')
+    usersRef: firebase.database().ref("users"),
   };
 
   isFormValid = () => {
@@ -91,8 +91,8 @@ class Register extends Component {
             .then(() => {
               // this.setState({ loading: false });
               this.saveUser(createdUser).then(() => {
-                console.log('User Saved');
-              })
+                console.log("User Saved");
+              });
             });
         })
         .catch((error) => {
@@ -113,12 +113,12 @@ class Register extends Component {
       : "";
   };
 
-  saveUser = createdUser => {
+  saveUser = (createdUser) => {
     return this.state.usersRef.child(createdUser.user.uid).set({
       name: createdUser.user.displayName,
-      avatar: createdUser.user.photoURL
-    })
-  }
+      avatar: createdUser.user.photoURL,
+    });
+  };
 
   render() {
     const {
@@ -133,7 +133,7 @@ class Register extends Component {
     return (
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" icon color="orange" textAlign="center">
+          <Header as="h1" icon color="orange" textAlign="center">
             <Icon name="puzzle piece" color="orange" />
             Register for DunChat
           </Header>
