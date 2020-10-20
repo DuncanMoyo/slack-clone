@@ -21,21 +21,24 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./reducers";
 import { setUser } from "./actions";
 
+import Spinner from './spinner/Spinner'
+
 const store = createStore(rootReducer, composeWithDevTools());
 
 class Root extends Component {
   componentDidMount() {
+    // console.log(this.props.isLoading);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // console.log(user);
-        this.props.setUser(user)
+        this.props.setUser(user);
         this.props.history.push("/");
       }
     });
   }
 
   render() {
-    return (
+    return this.props.isLoading ? <Spinner /> : (
       <Router>
         <Switch>
           <Route exact path="/" component={App} />
@@ -47,18 +50,19 @@ class Root extends Component {
   }
 }
 
-const RootWithAut = withRouter(connect(null, { setUser })(Root));
+const mapStateToProps = state => ({
+  isLoading: state.user.isLoading
+})
+
+const RootWithAuth = withRouter(connect(mapStateToProps, { setUser })(Root));
 
 ReactDOM.render(
   <Provider store={store}>
     <Router>
-      <RootWithAut />
+      <RootWithAuth />
     </Router>
   </Provider>,
   document.getElementById("root")
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
