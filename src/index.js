@@ -15,10 +15,20 @@ import Register from "./components/Auth/Register";
 import "semantic-ui-css/semantic.min.css";
 import firebase from "./Firebase";
 
+import { createStore } from "redux";
+import { Provider, connect } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import rootReducer from "./reducers";
+import { setUser } from "./actions";
+
+const store = createStore(rootReducer, composeWithDevTools());
+
 class Root extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        // console.log(user);
+        this.props.setUser(user)
         this.props.history.push("/");
       }
     });
@@ -37,12 +47,14 @@ class Root extends Component {
   }
 }
 
-const RootWithAut = withRouter(Root);
+const RootWithAut = withRouter(connect(null, { setUser })(Root));
 
 ReactDOM.render(
-  <Router>
-    <RootWithAut />
-  </Router>,
+  <Provider store={store}>
+    <Router>
+      <RootWithAut />
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
 
