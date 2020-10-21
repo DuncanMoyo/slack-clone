@@ -44,13 +44,11 @@ class Root extends Component {
     return this.props.isLoading ? (
       <Spinner />
     ) : (
-      <Router>
         <Switch>
           <Route exact path="/" component={App} />
           <Route path="/login" exact component={Login} />
           <Route path="/register" exact component={Register} />
         </Switch>
-      </Router>
     );
   }
 }

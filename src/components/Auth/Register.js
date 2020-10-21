@@ -93,7 +93,13 @@ class Register extends Component {
               this.saveUser(createdUser).then(() => {
                 console.log("User Saved");
               });
-            });
+            }).catch(error => {
+              // console.log(error);
+              this.setState({
+                errors: this.state.errors.concat(error),
+                loading: false
+              })
+            })
         })
         .catch((error) => {
           // console.log(error);
@@ -104,7 +110,7 @@ class Register extends Component {
         });
     }
   };
-  u;
+  
   handleInputError = (errors, inputName) => {
     return errors.some((error) =>
       error.message.toLowerCase().includes(inputName)
