@@ -52,6 +52,14 @@ class Channels extends Component {
     });
   };
 
+  componentWillUnmount() {
+    this.removeListeners();
+  };
+
+  removeListeners = () => {
+    this.state.channelsRef.off();
+  };
+
   setFirstChannel = () => {
     const firstChannel = this.state.channels[0];
     if (this.state.firstLoad && this.state.channels.length > 0) {
